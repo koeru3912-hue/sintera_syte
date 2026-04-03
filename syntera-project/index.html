@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Syntera — ИИ-система записи клиентов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#5B8AFF;
+  --blue-dark:#3D6FE8;
+  --blue-hero:#4B7BFF;
+  --orange:#FF6B35;
+  --orange-dark:#E85A25;
+  --bg:#fff;
+  --bg2:#F4F7FF;
+  --bg3:#EBF0FF;
+  --card:#fff;
+  --border:#E2E8F8;
+  --t:#1A1F36;
+  --t2:#6B7399;
+  --t3:#A0A8C8;
+  --f:'Manrope',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:var(--f);overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--orange);color:#fff}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes urgency{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(91,138,255,.12);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between}
+@media(max-width:900px){nav{padding:0 20px}}
+.nav-left{display:flex;align-items:center;gap:20px}
+.logo{font-size:17px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--t);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo-desc{font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--t2);border-left:1px solid var(--border);padding-left:12px;line-height:1.3}
+@media(max-width:640px){.logo-desc{display:none}}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{color:var(--t2);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--blue)}
+@media(max-width:900px){.nav-links{display:none}}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-phone{display:flex;align-items:center;gap:8px;color:var(--t);text-decoration:none;font-size:14px;font-weight:700;transition:color .2s}
+.nav-phone:hover{color:var(--blue)}
+.nav-phone-icon{width:32px;height:32px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px}
+.nav-messengers{display:flex;gap:6px}
+.nav-msg{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;text-decoration:none;transition:transform .2s;background:var(--bg3)}
+.nav-msg:hover{transform:scale(1.12)}
+.nav-cta{background:var(--orange);color:#fff;border:none;padding:9px 20px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;font-family:var(--f);white-space:nowrap}
+.nav-cta:hover{background:var(--orange-dark);transform:translateY(-1px)}
+@media(max-width:640px){.nav-phone span{display:none}.nav-messengers{display:none}}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:linear-gradient(135deg,#3A6AEE 0%,#5B8AFF 55%,#7AA3FF 100%);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.hero-deco{position:absolute;top:-100px;right:-100px;width:600px;height:600px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none}
+.hero-deco2{position:absolute;bottom:-150px;left:-80px;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+.hero-deco3{position:absolute;top:40%;right:15%;width:300px;height:300px;border-radius:50%;background:rgba(255,107,53,.08);pointer-events:none}
+
+.hero-body{flex:1;max-width:1200px;margin:0 auto;padding:80px 40px 40px;display:grid;grid-template-columns:1fr 440px;gap:48px;align-items:center;width:100%}
+@media(max-width:960px){.hero-body{grid-template-columns:1fr;padding:80px 20px 40px;gap:32px}}
+
+/* LEFT COLUMN */
+.hero-left{display:flex;flex-direction:column}
+
+/* Ниша-табы */
+.hero-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;opacity:0;animation:fadeUp .5s ease .05s forwards}
+.htab{padding:7px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:rgba(255,255,255,.88);font-size:11px;font-weight:600;cursor:pointer;transition:all .18s;font-family:var(--f);display:flex;align-items:center;gap:5px}
+.htab.on{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.55);color:#fff}
+.htab:hover:not(.on){background:rgba(255,255,255,.16)}
+
+/* Eyebrow */
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:14px;opacity:0;animation:fadeUp .5s ease .12s forwards}
+
+/* H1 */
+.hero h1{font-size:clamp(30px,3.8vw,52px);font-weight:800;line-height:1.1;letter-spacing:-.5px;color:#fff;margin-bottom:16px;opacity:0;animation:fadeUp .6s ease .2s forwards}
+.hero h1 .u{text-decoration:underline;text-underline-offset:5px;text-decoration-color:rgba(255,255,255,.5)}
+.hero h1 .or{color:#FFD166}
+
+/* Подзаголовок */
+.hero-sub{font-size:clamp(13px,1.4vw,16px);color:rgba(255,255,255,.84);line-height:1.65;margin-bottom:24px;font-weight:400;opacity:0;animation:fadeUp .6s ease .3s forwards;max-width:540px}
+
+/* Преимущества */
+.hero-benefits{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;opacity:0;animation:fadeUp .6s ease .38s forwards}
+.hb{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.9);line-height:1.45}
+.hb-icon{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px}
+
+/* Форма */
+.hero-form{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:24px;opacity:0;animation:fadeUp .6s ease .46s forwards}
+.hero-form-label{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+.hero-form-sublabel{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:16px}
+.hero-form-row{display:flex;gap:10px}
+@media(max-width:520px){.hero-form-row{flex-direction:column}}
+.hero-inp{flex:1;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;padding:13px 18px;border-radius:100px;font-size:14px;font-family:var(--f);outline:none;transition:all .2s}
+.hero-inp::placeholder{color:rgba(255,255,255,.5)}
+.hero-inp:focus{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.65)}
+.hero-submit{background:var(--orange);color:#fff;border:none;padding:13px 24px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:8px;animation:urgency 3s ease-in-out 2s infinite}
+.hero-submit:hover{background:var(--orange-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,53,.4);animation:none}
+.hero-submit-arr{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:12px}
+.hero-form-guarantee{margin-top:12px;font-size:11px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
+.hero-form-guarantee::before{content:'🔒';font-size:12px}
+
+/* Urgency bar */
+.hero-urgency{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;background:rgba(255,107,53,.2);border:1px solid rgba(255,107,53,.4);border-radius:10px;font-size:12px;color:#FFD166;font-weight:600}
+.urgency-dot{width:8px;height:8px;border-radius:50%;background:#FF6B35;animation:blink 1.2s ease-in-out infinite;flex-shrink:0}
+
+/* RIGHT COLUMN */
+.hero-right{display:flex;flex-direction:column;gap:14px}
+@media(max-width:960px){.hero-right{display:none}}
+
+/* Карточки-пруфы */
+.proof-card{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:16px 20px;transition:transform .2s}
+.proof-card:hover{transform:translateY(-3px)}
+.proof-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.proof-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.3)}
+.proof-name{font-size:13px;font-weight:700;color:#fff}
+.proof-role{font-size:11px;color:rgba(255,255,255,.6)}
+.proof-text{font-size:12px;color:rgba(255,255,255,.85);line-height:1.55}
+.proof-metric{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,53,.2);border:1px solid rgba(255,107,53,.35);border-radius:100px;padding:4px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#FFD166}
+
+/* Мини-стат */
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hstat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:14px 16px;text-align:center}
+.hstat-num{font-size:26px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1}
+.hstat-lbl{font-size:10px;color:rgba(255,255,255,.65);margin-top:4px;line-height:1.4}
+
+/* ── ВИДЖЕТ ЗВОНКА ── */
+.call-widget{position:fixed;bottom:28px;right:28px;z-index:300;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.call-btn{width:56px;height:56px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(255,107,53,.4);transition:all .2s;animation:wiggle 4s ease-in-out 3s infinite}
+.call-btn:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(255,107,53,.5);animation:none}
+.call-bubble{background:var(--t);color:#fff;font-size:12px;font-weight:600;padding:8px 14px;border-radius:100px;white-space:nowrap;opacity:0;transform:translateX(10px);transition:all .2s;pointer-events:none}
+.call-widget:hover .call-bubble{opacity:1;transform:translateX(0)}
+
+/* btn-orange нужен ниже */
+.btn-orange{background:var(--orange);color:#fff;border:none;padding:14px 28px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .2s;font-family:var(--f)}
+.btn-orange:hover{background:var(--orange-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,53,.35)}
+.btn-arr{width:32px;height:32px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:14px;flex-shrink:0}
+.btn-ghost{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);padding:14px 28px;border-radius:100px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;font-family:var(--f);backdrop-filter:blur(4px)}
+.btn-ghost:hover{background:rgba(255,255,255,.25)}
+
+/* TICKER */
+.tkw{overflow:hidden;background:var(--orange);padding:12px 0}
+.tkt{display:flex;white-space:nowrap;animation:ticker 28s linear infinite}
+.tki{display:inline-flex;align-items:center;gap:10px;padding:0 32px;font-size:12px;color:rgba(255,255,255,.9);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.tks{color:#fff;opacity:.6;font-size:18px;line-height:1}
+
+/* SECTIONS */
+.sec{padding:88px 0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.wrap{padding:0 20px}.sec{padding:56px 0}}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.ttl{font-size:clamp(26px,3.8vw,48px);font-weight:800;line-height:1.1;letter-spacing:-.5px}
+.ttl .hl{color:var(--blue)}
+.ttl .or{color:var(--orange)}
+
+/* STATS / CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+@media(max-width:900px){.cards-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.cards-grid{grid-template-columns:1fr}}
+.card{background:var(--bg3);border-radius:16px;padding:28px 24px;transition:all .25s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(91,138,255,.12)}
+.card-dot{width:10px;height:10px;border-radius:50%;background:var(--blue);margin-bottom:16px}
+.card-txt{font-size:14px;color:var(--t);line-height:1.6;font-weight:500}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:52px}
+@media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.stats-row{grid-template-columns:1fr}}
+.stc{background:var(--bg);padding:32px 24px;transition:background .2s}
+.stc:hover{background:var(--bg3)}
+.stbig{font-size:46px;font-weight:800;letter-spacing:-2px;line-height:1;color:var(--blue)}
+.stdsc{margin-top:8px;color:var(--t2);font-size:13px;line-height:1.5}
+
+/* WHO */
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+@media(max-width:800px){.who-grid{grid-template-columns:1fr}}
+.who-card{background:var(--bg);border:2px solid var(--border);border-radius:16px;padding:28px 24px;cursor:pointer;transition:all .2s}
+.who-card:hover{border-color:var(--blue);box-shadow:0 8px 24px rgba(91,138,255,.1)}
+.who-card.on{border-color:var(--blue);background:var(--bg3)}
+.wico{font-size:32px;margin-bottom:12px}
+.wtit{font-size:17px;font-weight:800;margin-bottom:14px;color:var(--t)}
+.wpains{list-style:none;display:flex;flex-direction:column;gap:8px}
+.wpains li{font-size:13px;color:var(--t2);padding-left:16px;position:relative;line-height:1.55}
+.wpains li::before{content:'—';position:absolute;left:0;color:var(--t3)}
+.cnote{margin-top:24px;padding:22px 26px;background:linear-gradient(135deg,rgba(91,138,255,.06),rgba(91,138,255,.02));border:1px solid rgba(91,138,255,.15);border-radius:14px;font-size:14px;color:var(--t2);line-height:1.7}
+.cnote strong{color:var(--t)}
+.cnote em{color:var(--orange);font-style:normal;font-weight:600}
+
+/* HOW */
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+@media(max-width:900px){.how-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.how-grid{grid-template-columns:1fr}}
+.hwc{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 24px;transition:all .25s}
+.hwc:hover{border-color:var(--blue);box-shadow:0 8px 28px rgba(91,138,255,.1);transform:translateY(-3px)}
+.hwn{font-size:13px;font-weight:700;color:var(--blue);background:var(--bg3);width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.hwt{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--t)}
+.hwd{font-size:13px;color:var(--t2);line-height:1.65}
+
+/* CASES */
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+@media(max-width:900px){.cgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.cgrid{grid-template-columns:1fr}}
+.ccard{background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .25s}
+.ccard:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:0 16px 40px rgba(91,138,255,.12)}
+.cimg{width:100%;height:160px;object-fit:cover;display:block;filter:brightness(.85);transition:filter .3s}
+.ccard:hover .cimg{filter:brightness(.95)}
+.cbody{padding:18px}
+.cloc{font-size:11px;color:var(--t3);margin-bottom:5px}
+.cniche{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.ctit{font-size:13px;font-weight:700;line-height:1.45;margin-bottom:13px;color:var(--t)}
+.cmets{display:flex;gap:14px;padding-top:13px;border-top:1px solid var(--border)}
+.cmet strong{display:block;font-size:18px;font-weight:800;color:var(--orange);letter-spacing:-.4px}
+.cmet span{font-size:10px;color:var(--t2)}
+
+/* BREAKDOWN */
+.bd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px}
+@media(max-width:680px){.bd-grid{grid-template-columns:1fr}}
+.bdc{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px 24px;transition:all .2s}
+.bdc:hover{border-color:var(--blue);box-shadow:0 8px 24px rgba(91,138,255,.08)}
+.bdn{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.bdt{font-size:17px;font-weight:800;letter-spacing:-.3px;margin-bottom:8px;color:var(--t)}
+.bdd{font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:12px}
+.bdb{font-size:12px;padding:10px 14px;background:var(--bg3);border-left:3px solid var(--blue);color:var(--t2);line-height:1.55;border-radius:0 8px 8px 0}
+
+/* PRICING */
+.prow{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:48px}
+@media(max-width:600px){.prow{grid-template-columns:1fr}}
+.pc{background:var(--bg);border:2px solid var(--border);border-radius:20px;padding:32px 28px;position:relative;transition:all .2s}
+.pc.ft{border-color:var(--blue);background:linear-gradient(135deg,rgba(91,138,255,.04) 0%,var(--bg) 100%)}
+.pbadge{position:absolute;top:-1px;left:24px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 14px;border-radius:0 0 8px 8px}
+.pname{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+.pdesc{font-size:15px;font-weight:700;margin-bottom:22px;color:var(--t)}
+.pamt{font-size:42px;font-weight:800;letter-spacing:-2px;line-height:1;color:var(--t)}
+.pc.ft .pamt{color:var(--blue)}
+.psub{font-size:13px;color:var(--t2);margin-top:6px;margin-bottom:24px}
+.pcta{display:block;text-align:center;padding:14px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;transition:all .2s;font-family:var(--f);border:none}
+.pcta.pr{background:var(--orange);color:#fff}
+.pcta.pr:hover{background:var(--orange-dark)}
+.pcta.gh{background:transparent;color:var(--t);border:2px solid var(--border)}
+.pcta.gh:hover{border-color:var(--blue);color:var(--blue)}
+.pnote{text-align:center;margin-top:14px;font-size:12px;color:var(--t3)}
+
+/* STAGES */
+.sglist{margin-top:48px}
+.sgrow{display:grid;grid-template-columns:64px 1fr;gap:24px;padding:32px 0;border-bottom:1px solid var(--border)}
+.sgrow:last-child{border-bottom:none}
+@media(max-width:540px){.sgrow{grid-template-columns:1fr;gap:8px;padding:24px 0}}
+.sgn{width:48px;height:48px;border-radius:14px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--blue)}
+.sgt{font-size:19px;font-weight:800;letter-spacing:-.3px;margin-bottom:8px;color:var(--t)}
+.sgd{font-size:14px;color:var(--t2);line-height:1.7}
+.sgr{margin-top:12px;padding:11px 16px;background:var(--bg3);border-left:3px solid var(--orange);font-size:13px;color:var(--t2);line-height:1.6;border-radius:0 10px 10px 0}
+.sgr strong{color:var(--t)}
+
+/* CTA */
+.cta-block{background:linear-gradient(135deg,#4B7BFF 0%,#6B96FF 100%);border-radius:24px;padding:72px 48px;text-align:center;position:relative;overflow:hidden;margin:0 40px 88px}
+@media(max-width:768px){.cta-block{margin:0 20px 60px;padding:48px 24px}}
+.cta-block::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+.cta-block::after{content:'';position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+.cta-block h2{font-size:clamp(22px,3.8vw,44px);font-weight:800;letter-spacing:-.5px;margin-bottom:14px;color:#fff;position:relative}
+.cta-block p{font-size:16px;color:rgba(255,255,255,.82);max-width:480px;margin:0 auto 36px;line-height:1.7;position:relative}
+.frow{display:flex;gap:10px;max-width:460px;margin:0 auto;position:relative}
+@media(max-width:520px){.frow{flex-direction:column}}
+.finp{flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:14px 20px;border-radius:100px;font-size:14px;font-family:var(--f);outline:none;transition:all .2s;backdrop-filter:blur(4px)}
+.finp::placeholder{color:rgba(255,255,255,.55)}
+.finp:focus{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6)}
+.chints{margin-top:14px;font-size:12px;color:rgba(255,255,255,.6);position:relative}
+.smsg{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:16px 28px;border-radius:100px;color:#fff;font-weight:700;font-size:15px}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;max-width:1200px;margin:0 auto}
+@media(max-width:768px){footer{flex-direction:column;text-align:center;padding:28px 20px}}
+.flogo{font-size:16px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--t)}
+.fcopy{font-size:12px;color:var(--t3)}
+.flinks{display:flex;gap:20px}
+.flinks a{font-size:12px;color:var(--t2);text-decoration:none;transition:color .2s}
+.flinks a:hover{color:var(--blue)}
+
+/* MODAL */
+.ovl{position:fixed;inset:0;background:rgba(26,31,54,.7);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .18s ease}
+.mdl{background:#fff;border-radius:20px;padding:44px 38px;max-width:620px;width:100%;position:relative;max-height:85vh;overflow-y:auto;animation:fadeUp .25s ease}
+@media(max-width:580px){.mdl{padding:28px 18px}}
+.mx{position:absolute;top:16px;right:16px;background:var(--bg2);border:none;color:var(--t2);width:34px;height:34px;border-radius:10px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.mx:hover{background:var(--bg3);color:var(--t)}
+.mnic{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:5px}
+.mloc{font-size:12px;color:var(--t2);margin-bottom:18px}
+.mdl h3{font-size:20px;font-weight:800;letter-spacing:-.3px;margin-bottom:24px;line-height:1.35;color:var(--t)}
+.mblk{margin-bottom:20px}
+.mblbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:7px}
+.mblk p{font-size:14px;color:var(--t2);line-height:1.65}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.chip{background:var(--bg3);border:1px solid var(--border);color:var(--blue);padding:5px 14px;border-radius:100px;font-size:12px;font-weight:700}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <div class="nav-left">
+    <a href="#" class="logo">Syntera <span class="logo-desc">ИИ-система записи<br/>клиентов 24/7</span></a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#how">Как работает</a></li>
+    <li><a href="#cases">Кейсы</a></li>
+    <li><a href="#price">Цены</a></li>
+    <li><a href="#stages">Этапы</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="tel:+48459568780" class="nav-phone">
+      <span class="nav-phone-icon">📞</span>
+      <span>+48 459 568 780</span>
+    </a>
+    <div class="nav-messengers">
+      <a href="https://t.me/" class="nav-msg" title="Telegram">✈️</a>
+      <a href="https://wa.me/" class="nav-msg" title="WhatsApp">💬</a>
+    </div>
+    <a href="#cta" class="nav-cta" id="nav-cta">Получить аудит</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-deco"></div><div class="hero-deco2"></div><div class="hero-deco3"></div>
+  <div class="hero-body">
+
+    <!-- ЛЕВАЯ КОЛОНКА -->
+    <div class="hero-left">
+      <div class="hero-tabs" id="aud-tabs">
+        <button class="htab on" data-aud="dental">🦷 Стоматология</button>
+        <button class="htab" data-aud="medical">🏥 Медицина</button>
+        <button class="htab" data-aud="beauty">💅 Красота</button>
+      </div>
+      <div class="hero-eyebrow">Создаём и внедряем виртуальных сотрудников</div>
+
+      <!-- H1: Конкретная выгода + Гарантия + Ограничение -->
+      <h1 id="hero-h1">Загрузка клиники <span class="u">до 80%</span> за 3 месяца — <span class="or">или вернём деньги</span></h1>
+
+      <!-- Подзаголовок: Цифры + триггер + призыв -->
+      <p class="hero-sub" id="hero-sub">Внедряем ИИ-менеджера «под ключ»: отвечает за 30–90 сек, записывает 24/7, «дожимает» и возвращает клиентов. Вы выходите из операционки. Первые результаты — уже в первый месяц.</p>
+
+      <!-- Преимущества: что получит клиент -->
+      <div class="hero-benefits" id="hero-benefits">
+        <div class="hb"><div class="hb-icon">✓</div>Каждая заявка — по единому стандарту: без «забыли» и «не успели»</div>
+        <div class="hb"><div class="hb-icon">✓</div>Видите аналитику: где теряются клиенты и какая реклама реально работает</div>
+        <div class="hb"><div class="hb-icon">✓</div>Живая поддержка по телефону — не бот и не тикет-система</div>
+      </div>
+
+      <!-- ФОРМА: жёсткий оффер -->
+      <div class="hero-form" id="hero-form-block">
+        <div class="hero-form-label">🎯 Получите бесплатный аудит за 24 часа</div>
+        <div class="hero-form-sublabel">Покажем, сколько заявок вы теряете прямо сейчас — в рублях</div>
+        <div class="hero-form-row">
+          <input class="hero-inp" type="tel" placeholder="Ваш номер телефона" id="hero-phone"/>
+          <button class="hero-submit" onclick="submitHero()">Узнать потери <span class="hero-submit-arr">→</span></button>
+        </div>
+        <div class="hero-form-guarantee">Без обязательств · Ответим за 24 часа · Конфиденциально</div>
+        <div class="hero-urgency"><span class="urgency-dot"></span>Осталось <strong>&nbsp;3 места&nbsp;</strong> на бесплатный аудит в апреле</div>
+      </div>
+      <div id="hero-success" style="display:none;margin-top:16px;padding:20px 24px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:14px;color:#fff;font-weight:700;font-size:15px">
+        ✅ Заявка принята! Свяжемся в течение 24 часов.
+      </div>
+    </div>
+
+    <!-- ПРАВАЯ КОЛОНКА: пруфы + статы -->
+    <div class="hero-right">
+      <div class="proof-card">
+        <div class="proof-top">
+          <img class="proof-avatar" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=80&q=80&fit=crop&crop=face" alt=""/>
+          <div><div class="proof-name">Анна Ковалевская</div><div class="proof-role">Владелец WHITE-DENTAL, Варшава</div></div>
+        </div>
+        <div class="proof-text">«Перестала тушить пожары с администраторами. Система сама записывает, напоминает и возвращает пациентов. За первый месяц — плюс 23 новых записи.»</div>
+        <div class="proof-metric">📈 Загрузка выросла с 40% до 74%</div>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-num" id="s1">80%</div><div class="hstat-lbl">Загрузка клиники через 3 мес.</div></div>
+        <div class="hstat"><div class="hstat-num" id="s2">+50%</div><div class="hstat-lbl">Рост доходимости пациентов</div></div>
+        <div class="hstat"><div class="hstat-num" id="s3">30с</div><div class="hstat-lbl">Скорость ответа на заявку</div></div>
+        <div class="hstat"><div class="hstat-num" id="s4">0</div><div class="hstat-lbl">Ручного контроля от вас</div></div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-top">
+          <img class="proof-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80&fit=crop&crop=face" alt=""/>
+          <div><div class="proof-name">Мария Лейтан</div><div class="proof-role">Владелец Glam Studio, Прага</div></div>
+        </div>
+        <div class="proof-text">«60% клиентов, которые не приходили больше 2 месяцев, вернулись после автоматической реактивации. Это просто магия.»</div>
+        <div class="proof-metric">💰 Средний чек вырос на 25%</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ ВИДЖЕТ ЗВОНКА ══ -->
+<div class="call-widget">
+  <div class="call-bubble">Позвонить прямо сейчас</div>
+  <a href="tel:+48459568780" class="call-btn" title="Позвонить">📞</a>
+</div>
+
+<!-- TICKER -->
+<div class="tkw">
+  <div class="tkt" id="ticker"></div>
+</div>
+
+<!-- RESULTS CARDS -->
+<section class="sec" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="rv" style="text-align:center">
+      <div class="lbl" style="text-align:center">Результаты</div>
+      <div class="ttl" style="text-align:center">9 из 10 клиентов — уже <span class="hl">в первый месяц</span></div>
+    </div>
+    <div class="rv d2"><div class="stats-row" id="stats-row"></div></div>
+    <div class="rv d3">
+      <div class="cards-grid" id="results-cards"></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section class="sec" id="who">
+  <div class="wrap">
+    <div class="rv"><div class="lbl">Для кого</div></div>
+    <div class="rv d1"><div class="ttl">Узнаёте <span class="hl">себя?</span></div></div>
+    <div class="rv d2"><div class="who-grid" id="who-grid"></div></div>
+    <div class="rv d3">
+      <div class="cnote">
+        <strong>Проблема не в администраторах и не в рекламе.</strong> Проблема — в отсутствии единой системы. Нет сценария, нет автоконтроля, нет связки каналов с CRM. Результат — замкнутый круг: <em>реклама → заявки → хаос → разочарование → ещё больше контроля</em>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="sec" id="how" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="rv"><div class="lbl">Как это работает</div></div>
+    <div class="rv d1"><div class="ttl">Система берёт на себя<br/><span class="hl">всю рутину записи</span></div></div>
+    <div class="rv d2">
+      <div class="how-grid">
+        <div class="hwc"><div class="hwn">01</div><div class="hwt">Аудит точек потери</div><div class="hwd">Анализируем путь клиента от первого обращения до визита. Находим, где именно уходят деньги — до начала внедрения.</div></div>
+        <div class="hwc"><div class="hwn">02</div><div class="hwt">Ответ за 30–90 секунд</div><div class="hwd">Каждая заявка — по единому сценарию, без «забыли» и «не успели». 24/7 по всем каналам.</div></div>
+        <div class="hwc"><div class="hwn">03</div><div class="hwt">Напоминания и «дожимы»</div><div class="hwd">Автоподтверждения, напоминание за день и за час. Тёплые лиды не теряются из-за отсутствия обратной связи.</div></div>
+        <div class="hwc"><div class="hwn">04</div><div class="hwt">Прозрачная аналитика</div><div class="hwd">Видите: что происходит с заявками, где теряются клиенты, какие рекламные каналы реально работают.</div></div>
+        <div class="hwc"><div class="hwn">05</div><div class="hwt">Единый контур + CRM/МИС</div><div class="hwd">Все каналы — в одном окне. Данные автоматически уходят в вашу CRM и МИС без ручного труда.</div></div>
+        <div class="hwc"><div class="hwn">06</div><div class="hwt">Живая поддержка по тел.</div><div class="hwd">В критической ситуации отвечает живой человек, а не бот и не тикет-система.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="sec" id="cases">
+  <div class="wrap">
+    <div class="rv"><div class="lbl">Кейсы</div></div>
+    <div class="rv d1"><div class="ttl">По 2 кейса в каждой<br/><span class="hl">из трёх ниш</span></div></div>
+    <div class="rv d2"><div class="cgrid" id="cases-grid"></div></div>
+  </div>
+</section>
+
+<!-- BREAKDOWN + PRICE -->
+<section class="sec" id="price" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="rv"><div class="lbl">Состав продукта</div></div>
+    <div class="rv d1"><div class="ttl">Что входит<br/><span class="hl">в стоимость</span></div></div>
+    <div class="rv d2">
+      <div class="bd-grid">
+        <div class="bdc"><div class="bdn">01</div><div class="bdt">Аудит и проектирование</div><div class="bdd">Анализируем путь клиента, выявляем точки потери заявок и денег, формируем понятный план внедрения.</div><div class="bdb">✓ Вы заранее знаете, где теряются деньги — никакой «работы вслепую»</div></div>
+        <div class="bdc"><div class="bdn">02</div><div class="bdt">Внедрение технологии</div><div class="bdd">Подключаем все каналы связи, автоматизируем заявки, напоминания, подтверждения, переносы, передачу в CRM.</div><div class="bdb">✓ Каждая заявка — по единому стандарту, без сбоев и забывчивости</div></div>
+        <div class="bdc"><div class="bdn">03</div><div class="bdt">Регламенты и сценарии</div><div class="bdd">Единые сценарии общения с клиентами, стандарты обработки сложных запросов, обновляемая база знаний.</div><div class="bdb">✓ Результат не зависит от конкретного администратора</div></div>
+        <div class="bdc"><div class="bdn">04</div><div class="bdt">Сопровождение и поддержка</div><div class="bdd">Сопровождение после запуска, изменения под акции и услуги, живая поддержка по телефону.</div><div class="bdb">✓ Система постоянно в рабочем состоянии — не «брошена» после запуска</div></div>
+      </div>
+    </div>
+    <div class="rv d3">
+      <div class="prow">
+        <div class="pc">
+          <div class="pname">Пакет 1</div>
+          <div class="pdesc">Базовая система коммуникации</div>
+          <div class="pamt">200 000 ₽</div>
+          <div class="psub">Абонентская плата: 35 000 ₽ / мес</div>
+          <a href="#cta" class="pcta gh">Получить аудит →</a>
+        </div>
+        <div class="pc ft">
+          <div class="pbadge">Рекомендуем</div>
+          <div class="pname">Пакет 2</div>
+          <div class="pdesc">Базовая система + Голосовой помощник</div>
+          <div class="pamt">450 000 ₽</div>
+          <div class="psub">Абонентская плата: 70 000 ₽ / мес</div>
+          <a href="#cta" class="pcta pr">Получить аудит →</a>
+        </div>
+      </div>
+      <div class="pnote">Поэтапная оплата · Договор · Гарантия результата</div>
+    </div>
+  </div>
+</section>
+
+<!-- STAGES -->
+<section class="sec" id="stages">
+  <div class="wrap">
+    <div class="rv"><div class="lbl">Процесс</div></div>
+    <div class="rv d1"><div class="ttl">3 шага к <span class="or">загрузке 80%</span></div></div>
+    <div class="rv d2">
+      <div class="sglist">
+        <div class="sgrow"><div class="sgn">01</div><div><div class="sgt">Аудит и проектирование системы</div><div class="sgd">Анализируем путь клиента от первого обращения до визита. Выявляем точки потери заявок и денег. Фиксируем регламенты и скрипты.</div><div class="sgr">→ <strong>Результат:</strong> Вы получаете чёткое понимание: где теряются деньги, что будет изменено и каким будет результат — до начала внедрения</div></div></div>
+        <div class="sgrow"><div class="sgn">02</div><div><div class="sgt">Внедрение технологии и регламентов</div><div class="sgd">Подключаем все каналы связи. Автоматизируем обработку заявок, напоминания, подтверждения. Внедряем единые сценарии. Настраиваем CRM и МИС.</div><div class="sgr">→ <strong>Результат:</strong> Заявки обрабатываются за 30–90 секунд, хаос в расписании исчезает, вы перестаёте быть «узким горлышком»</div></div></div>
+        <div class="sgrow"><div class="sgn">03</div><div><div class="sgt">Сопровождение и контроль результата</div><div class="sgd">Сопровождаем систему после запуска. Оперативно вносим изменения под акции и новые услуги. Живая поддержка по телефону.</div><div class="sgr">→ <strong>Результат:</strong> Система не просто внедрена — она работает, адаптируется и даёт стабильный управляемый результат</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec" id="cta" style="background:var(--bg2)">
+  <div class="cta-block rv">
+    <div style="position:relative">
+      <div class="lbl" style="color:rgba(255,255,255,.7);margin-bottom:14px">Бесплатный аудит</div>
+      <h2 id="cta-h"></h2>
+      <p id="cta-p"></p>
+      <div id="cta-form">
+        <div class="frow">
+          <input class="finp" type="tel" placeholder="Ваш номер телефона" id="phone-inp"/>
+          <button class="btn-orange" id="cta-btn" onclick="submitForm()"></button>
+        </div>
+        <div class="chints" id="cta-hint"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">Syntera</div>
+  <div class="fcopy">© 2025 Syntera. Все права защищены.</div>
+  <div class="flinks">
+    <a href="#">Политика</a>
+    <a href="#cta">Контакты</a>
+    <a href="#">EN</a>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="ovl" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="mdl">
+    <button class="mx" onclick="closeModal()">✕</button>
+    <div class="mnic" id="m-niche"></div>
+    <div class="mloc" id="m-loc"></div>
+    <h3 id="m-title"></h3>
+    <div class="mblk"><div class="mblbl">Проблема</div><p id="m-problem"></p></div>
+    <div class="mblk"><div class="mblbl">Решение</div><p id="m-solution"></p></div>
+    <div class="mblk"><div class="mblbl">Результаты</div><div class="chips" id="m-chips"></div></div>
+    <div class="mblk"><div class="mblbl">Технологии</div><p id="m-tech"></p></div>
+  </div>
+</div>
+
+<script>
+const AUD=[{id:"dental",e:"🦷",l:"Стоматология"},{id:"medical",e:"🏥",l:"Медцентр"},{id:"beauty",e:"💅",l:"Салон красоты"}];
+
+const HERO={
+  dental:{
+    h1:'Загрузка клиники <span class="u">до 80%</span> за 3 месяца — <span class="or">или вернём деньги</span>',
+    sub:"Внедряем ИИ-менеджера «под ключ»: отвечает за 30–90 сек, записывает 24/7, «дожимает» и возвращает пациентов. Вы выходите из операционки. Первые результаты — уже в первый месяц.",
+    benefits:["Каждая заявка — по единому стандарту: без «забыли» и «не успели»","Видите аналитику: где теряются пациенты и какая реклама реально работает","Живая поддержка по телефону — не бот и не тикет-система"],
+    stats:[{n:"80%",l:"Загрузка клиники через 3 мес."},{n:"+50%",l:"Рост доходимости"},{n:"30с",l:"Скорость ответа"},{n:"0",l:"Ручного контроля"}],
+  },
+  medical:{
+    h1:'Стабильный поток пациентов <span class="u">без хаоса</span> уже через 90 дней — <span class="or">с гарантией результата</span>',
+    sub:"Единая система записи для медцентра: обрабатывает заявки 24/7, возвращает пациентов на повторные приёмы, устраняет накладки между специалистами. Без текучки и ручного контроля.",
+    benefits:["Все специалисты в единой системе — накладки и конфликты исчезают","Пациенты получают напоминания и возвращаются на повторные приёмы","Видите заполняемость каждого врача в реальном времени"],
+    stats:[{n:"+40%",l:"Заполняемость расписания"},{n:"+33%",l:"Конверсия в повторный приём"},{n:"24/7",l:"Обработка без выходных"},{n:"−50%",l:"Нагрузка на адм."}],
+  },
+  beauty:{
+    h1:'Мастера не простаивают, клиенты <span class="u">возвращаются сами</span> — <span class="or">результат за 60 дней или деньги назад</span>',
+    sub:"ИИ-менеджер принимает заявки из Instagram, WhatsApp и сайта, реактивирует ушедших клиентов и увеличивает средний чек через апсейлы. Всё автоматически — без дополнительных сотрудников.",
+    benefits:["Клиенты, не приходившие 60+ дней, получают персональный оффер и возвращаются","Мастера перестают простаивать — окна заполняются автоматически","Средний чек растёт за счёт умных апсейлов при записи"],
+    stats:[{n:"+35%",l:"Рост среднего чека"},{n:"60 дн",l:"Реактивация клиентов"},{n:"−65%",l:"Потерянных заявок"},{n:"+28%",l:"Записей через напоминания"}],
+  },
+};
+
+const STATS={
+  dental:[{n:"до 80%",d:"Загрузка клиники через 3 месяца"},{n:"+50%",d:"Рост доходимости пациентов"},{n:"30–90с",d:"Скорость ответа на заявку"},{n:"0",d:"Ручного контроля от собственника"}],
+  medical:[{n:"+40%",d:"Заполняемость расписания по специалистам"},{n:"+33%",d:"Конверсия в повторный приём"},{n:"24/7",d:"Обработка заявок без выходных"},{n:"−50%",d:"Нагрузка на администраторов"}],
+  beauty:[{n:"+35%",d:"Рост среднего чека через апсейлы"},{n:"60 дн",d:"Реактивация ушедших клиентов"},{n:"−65%",d:"Потерянных заявок из мессенджеров"},{n:"+28%",d:"Записей через автонапоминания"}],
+};
+
+const RESULTS={
+  dental:["Каждая заявка обрабатывается по единому сценарию — без «забыли», «не успели», «не разобрались»","Вы видите понятную картину: что происходит с заявками, где теряются пациенты, какие каналы реально работают","Система берёт на себя рутину — вы перестаёте «гадать», почему реклама есть, а записей нет"],
+  medical:["Все специалисты в единой системе — накладки и конфликты в расписании исчезают","Пациенты получают напоминания за день и за час — доходимость на повторный приём растёт","Вы видите аналитику по каждому врачу и каждому источнику трафика"],
+  beauty:["Клиенты, не приходившие 60+ дней, получают персональный оффер и возвращаются","Мастера перестают простаивать — окна заполняются автоматически","Средний чек растёт за счёт умных апсейлов при записи"],
+};
+
+const PAINS={
+  dental:["Реклама есть — записей нет. Заявки теряются на входе из-за медленного ответа","Постоянно контролируете администраторов: кто ответил, кто забыл, кто нагрубил","Текучка: снова обучаете нового, снова теряете клиентов в переходный период","Пустые окна при полной загрузке маркетинга — не понимаете, где рвётся цепочка"],
+  medical:["Несколько специалистов — хаос: конфликты в расписании, накладки, недовольные пациенты","Пациенты не возвращаются на повторные приёмы — нет системы напоминаний","Заявки из разных каналов (сайт, телефон, мессенджеры) теряются между ними","Администраторы перегружены и по-разному трактуют регламенты"],
+  beauty:["Клиенты приходят один раз и пропадают — нет системы удержания и возврата","Мастера простаивают из-за отмен в последний момент — деньги уходят в никуда","Instagram, WhatsApp, сайт, звонки — никто не успевает отвечать на все каналы","Хотите делать рассылки и «дожимать», но нет времени на ручную работу"],
+};
+
+const CASES=[
+  {niche:"🦷 Стоматология",loc:"📍 Варшава",title:"WHITE-DENTAL: с 40% загрузки до очереди на 2 недели вперёд",metrics:[{v:"+70%",l:"Скорость заявок"},{v:"−50%",l:"Нагрузка"},{v:"+20%",l:"Записей"}],problem:"Администраторы не успевали отвечать в часы пик. До 30% заявок терялось. Собственник лично проверял, все ли ответили.",solution:"Обучили модель на базе клиники, подключили Altegio, настроили автозапись и напоминания по Telegram и WhatsApp.",tech:"OpenAI, Gemini, CRM Altegio, WebHook, Telegram, WhatsApp",img:"https://images.unsplash.com/photo-1629909615184-74f495363b67?w=500&q=75"},
+  {niche:"🦷 Стоматология",loc:"📍 Краков",title:"DentalPro: рост повторных визитов и среднего чека через реактивацию",metrics:[{v:"+35%",l:"Повт. визиты"},{v:"+20%",l:"Средний чек"},{v:"9/10",l:"NPS"}],problem:"Пациенты не возвращались на профосмотры. Нет системы реактивации. Администраторы не успевали делать «дожимы».",solution:"Авторассылки по истории лечения: напоминание о профосмотре через 6 месяцев, персональный оффер.",tech:"OpenAI, Altegio CRM, SMS, WhatsApp, Telegram",img:"https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&q=75"},
+  {niche:"🏥 Медцентр",loc:"📍 Берлин",title:"Частный психолог: доходимость выросла с 55% до 88%",metrics:[{v:"+33%",l:"Доходимость"},{v:"+40%",l:"Записей"},{v:"−30%",l:"Отмен"}],problem:"Клиенты записывались, но не приходили. Ручной контроль расписания занимал 2–3 часа в день.",solution:"ИИ-ассистент управляет расписанием, отправляет деликатные напоминания, собирает обратную связь.",tech:"OpenAI, Telegram, Google Calendar, AmoCRM",img:"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=75"},
+  {niche:"🏥 Медцентр",loc:"📍 Варшава",title:"MedPlus (3 специалиста): ноль конфликтов, +45% заполняемости",metrics:[{v:"+45%",l:"Заполняемость"},{v:"0",l:"Конфликтов"},{v:"24/7",l:"Обработка"}],problem:"Три врача, ручное расписание в таблицах, постоянные накладки. Заявки обрабатывались хаотично.",solution:"Единый контур записи для всех специалистов, автосинхронизация с МИС, умное распределение заявок.",tech:"OpenAI, МИС Medesk, Google Calendar, Telegram, WhatsApp",img:"https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&q=75"},
+  {niche:"💅 Салон красоты",loc:"📍 Рига",title:"Sapfir Tattoo: мастера не простаивают — заполняемость 92%",metrics:[{v:"+70%",l:"Скорость"},{v:"−50%",l:"Нагрузка"},{v:"+20%",l:"Записей"}],problem:"Администратор не успевал отвечать в Instagram и WhatsApp. Мастера простаивали из-за отмен.",solution:"GPT-модель со знанием стилей тату, автоподтверждения, интеграция с Google Календарём мастеров.",tech:"OpenAI, Google Calendar API, WhatsApp, Telegram, Instagram Direct",img:"https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500&q=75"},
+  {niche:"💅 Салон красоты",loc:"📍 Прага",title:"Glam Studio: 60% ушедших клиентов вернулись после реактивации",metrics:[{v:"60%",l:"Реактивация"},{v:"+25%",l:"Средний чек"},{v:"+18%",l:"Новых записей"}],problem:"Большая клиентская база, но клиенты уходили к конкурентам. Нет системы удержания.",solution:"Автосегментация базы, персональные офферы, апсейлы при записи.",tech:"OpenAI, YCLIENTS CRM, WhatsApp, Telegram, SMS",img:"https://images.unsplash.com/photo-1560066984-138dadb4c035?w=500&q=75"},
+];
+
+const CTA={
+  dental:{h:"Узнайте, где клиника<br/>теряет пациентов — бесплатно",p:"Проведём аудит пути пациента и покажем точки потери заявок. Конкретный план без воды и обязательств.",btn:"Получить аудит клиники",hint:"Покажем где теряются деньги · Рассчитаем загрузку до 80% · Ответим на вопросы"},
+  medical:{h:"Покажем, почему пациенты<br/>не возвращаются — бесплатно",p:"Разберём воронку вашего медцентра: где теряются повторные пациенты, почему не растёт заполняемость.",btn:"Получить аудит медцентра",hint:"Анализ по каждому специалисту · Карта потерь · Без обязательств"},
+  beauty:{h:"Узнайте, сколько клиентов<br/>ваш салон теряет каждый месяц",p:"Считаем потери от отмен, незаписанных лидов и ушедших клиентов. Конкретные цифры по вашему салону.",btn:"Получить аудит салона",hint:"Считаем потери в деньгах · План возврата клиентов · Без обязательств"},
+};
+
+const TICK=["Загрузка до 80% за 3 месяца","Ответ за 30–90 секунд","Внедрение «под ключ»","Живая поддержка по телефону","Доходимость +50%","Без ручного контроля","Поэтапная оплата","Интеграция с CRM и МИС"];
+
+let aud="dental";
+
+function setAud(id){
+  aud=id;
+  document.querySelectorAll('.htab').forEach(t=>t.classList.toggle('on',t.dataset.aud===id));
+  document.getElementById('hero-h1').innerHTML=HERO[id].h1;
+  document.getElementById('hero-sub').textContent=HERO[id].sub;
+  // benefits
+  const bEl=document.getElementById('hero-benefits');
+  if(bEl) bEl.innerHTML=HERO[id].benefits.map(b=>`<div class="hb"><div class="hb-icon">✓</div>${b}</div>`).join('');
+  // stats
+  const s=HERO[id].stats;
+  ['s1','s2','s3','s4'].forEach((id2,i)=>{
+    const el=document.getElementById(id2);
+    if(el){el.parentElement.querySelector('.hstat-num').textContent=s[i].n;el.parentElement.querySelector('.hstat-lbl').textContent=s[i].l;}
+  });
+  renderStats();renderWho();renderResults();renderCta();
+  document.getElementById('nav-cta').textContent=CTA[id].btn;
+}
+
+function submitHero(){
+  const inp=document.getElementById('hero-phone');
+  if(!inp||!inp.value.trim())return;
+  document.getElementById('hero-form-block').style.display='none';
+  document.getElementById('hero-success').style.display='block';
+}
+
+function renderStats(){
+  document.getElementById('stats-row').innerHTML=STATS[aud].map(s=>
+    `<div class="stc"><div class="stbig">${s.n}</div><div class="stdsc">${s.d}</div></div>`
+  ).join('');
+}
+
+function renderResults(){
+  document.getElementById('results-cards').innerHTML=RESULTS[aud].map(r=>
+    `<div class="card"><div class="card-dot"></div><div class="card-txt">${r}</div></div>`
+  ).join('');
+}
+
+function renderWho(){
+  document.getElementById('who-grid').innerHTML=AUD.map(a=>
+    `<div class="who-card${a.id===aud?' on':''}" onclick="setAud('${a.id}')">
+      <div class="wico">${a.e}</div><div class="wtit">${a.l}</div>
+      <ul class="wpains">${PAINS[a.id].map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>`
+  ).join('');
+}
+
+function renderCases(){
+  document.getElementById('cases-grid').innerHTML=CASES.map((c,i)=>
+    `<div class="ccard" onclick="openModal(${i})">
+      <img class="cimg" src="${c.img}" alt="${c.title}" loading="lazy"/>
+      <div class="cbody">
+        <div class="cloc">${c.loc}</div>
+        <div class="cniche">${c.niche}</div>
+        <div class="ctit">${c.title}</div>
+        <div class="cmets">${c.metrics.map(m=>`<div class="cmet"><strong>${m.v}</strong><span>${m.l}</span></div>`).join('')}</div>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function renderCta(){
+  const c=CTA[aud];
+  document.getElementById('cta-h').innerHTML=c.h;
+  document.getElementById('cta-p').textContent=c.p;
+  document.getElementById('cta-btn').textContent=c.btn+' →';
+  document.getElementById('cta-hint').textContent=c.hint;
+}
+
+function renderTicker(){
+  document.getElementById('ticker').innerHTML=[...TICK,...TICK].map(t=>
+    `<span class="tki"><span class="tks">·</span>${t}</span>`).join('');
+}
+
+function openModal(i){
+  const c=CASES[i];
+  document.getElementById('m-niche').textContent=c.niche;
+  document.getElementById('m-loc').textContent=c.loc;
+  document.getElementById('m-title').textContent=c.title;
+  document.getElementById('m-problem').textContent=c.problem;
+  document.getElementById('m-solution').textContent=c.solution;
+  document.getElementById('m-tech').textContent=c.tech;
+  document.getElementById('m-chips').innerHTML=c.metrics.map(m=>`<span class="chip">${m.l}: ${m.v}</span>`).join('');
+  document.getElementById('modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').style.display='none';
+  document.body.style.overflow='';
+}
+function submitForm(){
+  const inp=document.getElementById('phone-inp');
+  if(!inp.value.trim())return;
+  document.getElementById('cta-form').innerHTML='<div class="smsg">✓ Заявка принята! Свяжемся в ближайшее время.</div>';
+}
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('sc',window.scrollY>50);
+},{passive:true});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+},{threshold:.1});
+
+document.querySelectorAll('.htab').forEach(t=>t.addEventListener('click',()=>setAud(t.dataset.aud)));
+
+renderStats();renderResults();renderWho();renderCases();renderCta();renderTicker();
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+document.getElementById('nav-cta').textContent=CTA[aud].btn;
+</script>
+</body>
+</html>
