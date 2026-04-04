@@ -1,0 +1,23 @@
+:root {
+  --blue: #5B8AFF;
+  --blue-dark: #3D6FE8;
+  --blue-hero: #4B7BFF;
+  --orange: #FF6B35;
+  --orange-dark: #E85A25;
+  --bg: #fff;
+  --bg2: #F4F7FF;
+  --bg3: #EBF0FF;
+  --card: #fff;
+  --border: #E2E8F8;
+  --t: #1A1F36;
+  --t2: #6B7399;
+  --t3: #A0A8C8;
+  --f: 'Manrope', sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-full: 100px;
+  --shadow: 0 8px 24px rgba(91, 138, 255, 0.1);
+  --shadow-lg: 0 16px 40px rgba(91, 138, 255, 0.12);
+  --transition: 0.2s ease;
+  --max-width: 1200px;
+}

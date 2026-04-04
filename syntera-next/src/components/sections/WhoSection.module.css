@@ -1,0 +1,76 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 44px;
+}
+
+.card {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 8px 24px rgba(91, 138, 255, 0.1);
+}
+
+.cardActive {
+  border-color: var(--blue);
+  background: var(--bg3);
+}
+
+.icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: var(--t);
+}
+
+.pains {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pains li {
+  font-size: 13px;
+  color: var(--t2);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.55;
+}
+
+.pains li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--t3);
+}
+
+.note {
+  margin-top: 24px;
+  padding: 22px 26px;
+  background: linear-gradient(135deg, rgba(91, 138, 255, 0.06), rgba(91, 138, 255, 0.02));
+  border: 1px solid rgba(91, 138, 255, 0.15);
+  border-radius: 14px;
+  font-size: 14px;
+  color: var(--t2);
+  line-height: 1.7;
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

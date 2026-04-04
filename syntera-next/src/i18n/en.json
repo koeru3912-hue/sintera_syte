@@ -1,0 +1,126 @@
+{
+  "nav": {
+    "how": "How it works",
+    "cases": "Cases",
+    "price": "Pricing",
+    "stages": "Process",
+    "about": "About",
+    "contacts": "Contacts",
+    "getAudit": "Get audit"
+  },
+  "hero": {
+    "eyebrow": "We create and deploy virtual employees",
+    "formLabel": "🎯 Get a free audit within 24 hours",
+    "formSublabel": "We'll show you how many leads you're losing right now — in numbers",
+    "phonePlaceholder": "Your phone number",
+    "namePlaceholder": "Your name",
+    "submit": "Find out losses",
+    "submitting": "Sending...",
+    "guarantee": "No obligations · Response within 24h · Confidential",
+    "urgency": "<strong>3 spots left</strong> for free audit this month",
+    "success": "✅ Request received! We'll contact you within 24 hours."
+  },
+  "results": {
+    "label": "Results",
+    "title": "9 out of 10 clients — already <hl>in the first month</hl>"
+  },
+  "who": {
+    "label": "For whom",
+    "title": "Recognize <hl>yourself?</hl>",
+    "note": "<strong>The problem isn't your administrators or advertising.</strong> The problem is the lack of a unified system. No scripts, no automated control, no channel-CRM integration. The result — a vicious cycle: <em>ads → leads → chaos → frustration → even more control</em>."
+  },
+  "how": {
+    "label": "How it works",
+    "title": "The system handles <hl>all the booking routine</hl>"
+  },
+  "cases": {
+    "label": "Case studies",
+    "title": "2 cases in each <hl>of three niches</hl>",
+    "problem": "Problem",
+    "solution": "Solution",
+    "results": "Results",
+    "tech": "Technologies"
+  },
+  "pricing": {
+    "label": "What's included",
+    "title": "What's in <hl>the price</hl>",
+    "package1": "Package 1",
+    "package1Desc": "Basic communication system",
+    "package2": "Package 2",
+    "package2Desc": "Basic system + Voice assistant",
+    "recommended": "Recommended",
+    "monthly": "Monthly fee:",
+    "perMonth": "/ mo",
+    "note": "Installment payments · Contract · Result guarantee"
+  },
+  "stages": {
+    "label": "Process",
+    "title": "3 steps to <or>80% occupancy</or>"
+  },
+  "cta": {
+    "label": "Free audit",
+    "success": "✓ Request received! We'll contact you shortly."
+  },
+  "leadForm": {
+    "title": "Get a free audit",
+    "subtitle": "Leave your phone — we'll call within 24h",
+    "submit": "Get audit",
+    "submitting": "Sending...",
+    "guarantee": "🔒 Confidential · No obligations",
+    "success": "✅ Request received! Expect our call."
+  },
+  "contactForm": {
+    "name": "Name",
+    "phone": "Phone",
+    "message": "Message",
+    "namePlaceholder": "Your name",
+    "phonePlaceholder": "+1 (___) ___-____",
+    "messagePlaceholder": "Tell us about your situation",
+    "submit": "Send request",
+    "submitting": "Sending...",
+    "guarantee": "🔒 Confidential · No obligations · Response within 24h",
+    "successTitle": "Request received!",
+    "successText": "We'll contact you within 24 hours. Check your phone — we'll call or message you.",
+    "errorName": "Please enter your name",
+    "errorPhone": "Please enter a valid phone number"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "privacy": "Privacy",
+    "blog": "Blog"
+  },
+  "about": {
+    "title": "About — Syntera",
+    "h1": "We make sure your clients <hl>don't get lost</hl>",
+    "desc": "Syntera is a team of developers, marketers, and automation specialists. We build AI systems that book clients 24/7, without days off or human error.",
+    "ctaTitle": "Ready to start?",
+    "ctaText": "Get a free audit of your business — we'll show where you're losing clients",
+    "ctaBtn": "Get audit",
+    "teamTitle": "Team"
+  },
+  "contacts": {
+    "title": "Contacts — Syntera",
+    "h1": "Contact us",
+    "desc": "Tell us about your situation — we'll find a solution and conduct a free audit. We respond within 24 hours.",
+    "phone": "Phone",
+    "email": "Email",
+    "office": "Office",
+    "officeValue": "Warsaw, Poland",
+    "schedule": "Working hours:",
+    "weekdays": "Mon — Fri: 9:00 AM — 6:00 PM (CET)",
+    "weekends": "Sat — Sun: requests processed automatically",
+    "formTitle": "Submit a request",
+    "formSubtitle": "Fill out the form and we'll contact you for a free consultation"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page may have been moved or deleted. Here are some useful links:",
+    "home": "Go home",
+    "callUs": "Or call us:"
+  },
+  "lang": {
+    "ru": "RU",
+    "en": "EN",
+    "pl": "PL"
+  }
+}

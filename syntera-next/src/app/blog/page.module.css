@@ -1,0 +1,149 @@
+.page {
+  padding-top: 104px;
+  padding-bottom: 80px;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.header p {
+  font-size: 16px;
+  color: var(--t2);
+  line-height: 1.7;
+}
+
+.categories {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.catBtn {
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--t2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--f);
+  transition: all 0.15s;
+}
+
+.catBtn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.catBtnActive {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.25s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card:hover {
+  border-color: var(--blue);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cardImg {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.cardBody {
+  padding: 24px;
+}
+
+.cardMeta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cardCategory {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: var(--bg3);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.cardDate {
+  font-size: 12px;
+  color: var(--t3);
+}
+
+.cardReadTime {
+  font-size: 12px;
+  color: var(--t3);
+}
+
+.cardTitle {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  color: var(--t);
+}
+
+.cardExcerpt {
+  font-size: 13px;
+  color: var(--t2);
+  line-height: 1.6;
+}
+
+.cardTags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.tag {
+  font-size: 11px;
+  color: var(--t3);
+  background: var(--bg2);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
