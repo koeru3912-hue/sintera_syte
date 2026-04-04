@@ -1,0 +1,125 @@
+{
+  "nav": {
+    "how": "Jak to działa",
+    "cases": "Case study",
+    "price": "Cennik",
+    "stages": "Proces",
+    "about": "O firmie",
+    "contacts": "Kontakt",
+    "getAudit": "Uzyskaj audyt"
+  },
+  "hero": {
+    "eyebrow": "Tworzymy i wdrażamy wirtualnych pracowników",
+    "formLabel": "🎯 Uzyskaj bezpłatny audyt w ciągu 24 godzin",
+    "formSublabel": "Pokażemy, ile leadów tracisz teraz — w liczbach",
+    "phonePlaceholder": "Twój numer telefonu",
+    "submit": "Sprawdź straty",
+    "submitting": "Wysyłanie...",
+    "guarantee": "Bez zobowiązań · Odpowiedź w 24h · Poufnie",
+    "urgency": "Zostały <strong>3 miejsca</strong> na bezpłatny audyt w tym miesiącu",
+    "success": "✅ Zgłoszenie przyjęte! Skontaktujemy się w ciągu 24 godzin."
+  },
+  "results": {
+    "label": "Wyniki",
+    "title": "9 na 10 klientów — już <hl>w pierwszym miesiącu</hl>"
+  },
+  "who": {
+    "label": "Dla kogo",
+    "title": "Rozpoznajesz <hl>siebie?</hl>",
+    "note": "<strong>Problem nie leży w administratorach ani reklamie.</strong> Problem polega na braku jednolitego systemu. Brak scenariuszy, brak automatycznej kontroli, brak integracji kanałów z CRM. Rezultat — błędne koło: <em>reklama → leady → chaos → frustracja → jeszcze więcej kontroli</em>."
+  },
+  "how": {
+    "label": "Jak to działa",
+    "title": "System przejmuje <hl>całą rutynę rezerwacji</hl>"
+  },
+  "cases": {
+    "label": "Case study",
+    "title": "Po 2 przypadki w każdej <hl>z trzech nisz</hl>",
+    "problem": "Problem",
+    "solution": "Rozwiązanie",
+    "results": "Wyniki",
+    "tech": "Technologie"
+  },
+  "pricing": {
+    "label": "Co zawiera",
+    "title": "Co wchodzi <hl>w cenę</hl>",
+    "package1": "Pakiet 1",
+    "package1Desc": "Podstawowy system komunikacji",
+    "package2": "Pakiet 2",
+    "package2Desc": "Podstawowy system + Asystent głosowy",
+    "recommended": "Polecamy",
+    "monthly": "Opłata miesięczna:",
+    "perMonth": "/ mies.",
+    "note": "Płatność ratalna · Umowa · Gwarancja wyniku"
+  },
+  "stages": {
+    "label": "Proces",
+    "title": "3 kroki do <or>80% obłożenia</or>"
+  },
+  "cta": {
+    "label": "Bezpłatny audyt",
+    "success": "✓ Zgłoszenie przyjęte! Skontaktujemy się wkrótce."
+  },
+  "leadForm": {
+    "title": "Uzyskaj bezpłatny audyt",
+    "subtitle": "Zostaw telefon — oddzwonimy w 24h",
+    "submit": "Uzyskaj audyt",
+    "submitting": "Wysyłanie...",
+    "guarantee": "🔒 Poufnie · Bez zobowiązań",
+    "success": "✅ Zgłoszenie przyjęte! Czekaj na nasz telefon."
+  },
+  "contactForm": {
+    "name": "Imię",
+    "phone": "Telefon",
+    "message": "Wiadomość",
+    "namePlaceholder": "Jak się do Ciebie zwracać",
+    "phonePlaceholder": "+48 ___ ___ ___",
+    "messagePlaceholder": "Opisz swoją sytuację",
+    "submit": "Wyślij zgłoszenie",
+    "submitting": "Wysyłanie...",
+    "guarantee": "🔒 Poufnie · Bez zobowiązań · Odpowiedź w 24h",
+    "successTitle": "Zgłoszenie przyjęte!",
+    "successText": "Skontaktujemy się w ciągu 24 godzin. Sprawdź telefon — zadzwonimy lub napiszemy.",
+    "errorName": "Podaj swoje imię",
+    "errorPhone": "Podaj prawidłowy numer telefonu"
+  },
+  "footer": {
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "privacy": "Polityka",
+    "blog": "Blog"
+  },
+  "about": {
+    "title": "O firmie — Syntera",
+    "h1": "Dbamy o to, by Twoi klienci <hl>się nie gubili</hl>",
+    "desc": "Syntera to zespół programistów, marketerów i specjalistów ds. automatyzacji. Tworzymy systemy AI, które rezerwują klientów 24/7, bez dni wolnych i błędów ludzkich.",
+    "ctaTitle": "Gotowy zacząć?",
+    "ctaText": "Uzyskaj bezpłatny audyt swojego biznesu — pokażemy, gdzie tracisz klientów",
+    "ctaBtn": "Uzyskaj audyt",
+    "teamTitle": "Zespół"
+  },
+  "contacts": {
+    "title": "Kontakt — Syntera",
+    "h1": "Skontaktuj się z nami",
+    "desc": "Opowiedz o swojej sytuacji — dobierzemy rozwiązanie i przeprowadzimy bezpłatny audyt. Odpowiadamy w ciągu 24 godzin.",
+    "phone": "Telefon",
+    "email": "Email",
+    "office": "Biuro",
+    "officeValue": "Warszawa, Polska",
+    "schedule": "Godziny pracy:",
+    "weekdays": "Pon — Pt: 9:00 — 18:00 (CET)",
+    "weekends": "Sob — Ndz: zgłoszenia przetwarzane automatycznie",
+    "formTitle": "Wyślij zgłoszenie",
+    "formSubtitle": "Wypełnij formularz, a skontaktujemy się z Tobą na bezpłatną konsultację"
+  },
+  "notFound": {
+    "title": "Nie znaleziono strony",
+    "text": "Strona mogła zostać przeniesiona lub usunięta. Oto kilka przydatnych linków:",
+    "home": "Strona główna",
+    "callUs": "Lub zadzwoń do nas:"
+  },
+  "lang": {
+    "ru": "RU",
+    "en": "EN",
+    "pl": "PL"
+  }
+}
